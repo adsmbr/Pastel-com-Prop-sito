@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastel com Propósito</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-principal: #1a4d1a;
+            --cor-secundaria: #4CAF50;
+            --cor-texto: white;
+            --cor-destaque: #ffd700;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--cor-principal) 0%, #0e2d0e 100%);
+            color: var(--cor-texto);
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 6rem 0 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-image {
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid var(--cor-destaque);
+            z-index: 1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            color: var(--cor-destaque);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: var(--cor-destaque);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #e8f5e9;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 2rem;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            color: white;
+            pointer-events: none;
+        }
+
+        select option {
+            background: var(--cor-principal);
+            color: white;
+            padding: 0.5rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #66bb6a;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .flavors {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .flavor-item {
+            position: relative;
+            padding-left: 35px;
+            cursor: pointer;
+        }
+
+        .flavor-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background: var(--cor-secundaria);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .checkmark:after {
+            content: "";
+            display: none;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            width: 5px;
+            height: 10px;
+            transform: rotate(45deg);
+        }
+
+        .flavor-checkbox:checked ~ .checkmark {
+            background: #45a049;
+        }
+
+        .flavor-checkbox:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        button {
+            background: var(--cor-secundaria);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 8px;
+            width: 100%;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--cor-secundaria);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1000;
+        }
+
+        @media (max-width: 480px) {
+            .flavors {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://minhasreceitinhas.com.br/wp-content/uploads/2023/05/Pastel-de-feira-caseiro-1200x692.jpg" alt="Pastel Artesanal" class="header-image">
+        <h1>Pastel com Propósito</h1>
+    </div>
+
+    <div class="container">
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="quantity">Quantidade de pastéis:</label>
+                <div class="select-wrapper">
+                    <select id="quantity" name="Quantidade" required>
+                        <option value="">Selecione</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Sabores:</label>
+                <div class="flavors">
+                    <label class="flavor-item">
+                        <input type="checkbox" class="flavor-checkbox" name="Sabores" value="Carne">
+                        <span class="checkmark"></span>
+                        Carne
+                    </label>
+                    <label class="flavor-item">
+                        <input type="checkbox" class="flavor-checkbox" name="Sabores" value="Queijo">
+                        <span class="checkmark"></span>
+                        Queijo
+                    </label>
+                    <label class="flavor-item">
+                        <input type="checkbox" class="flavor-checkbox" name="Sabores" value="Frango">
+                        <span class="checkmark"></span>
+                        Frango
+                    </label>
+                    <label class="flavor-item">
+                        <input type="checkbox" class="flavor-checkbox" name="Sabores" value="Calabresa">
+                        <span class="checkmark"></span>
+                        Calabresa
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Nome completo:</label>
+                <input type="text" id="name" name="Nome" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Endereço:</label>
+                <input type="text" id="address" name="Endereço" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Telefone:</label>
+                <input type="tel" id="phone" name="Telefone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="observation">Observações:</label>
+                <textarea id="observation" name="Observações" placeholder="Ex: Sem cebola, molho à parte..."></textarea>
+            </div>
+
+            <button type="submit">Enviar Pedido</button>
+        </form>
+    </div>
+
+    <div class="success-message" id="successMessage">Pedido enviado com sucesso! 🎉</div>
+
+    <script>
+        document.getElementById('orderForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const flavors = Array.from(document.querySelectorAll('.flavor-checkbox:checked'))
+                                .map(checkbox => checkbox.value);
+            
+            if(flavors.length === 0) {
+                alert('Selecione pelo menos um sabor!');
+                return;
+            }
+
+            const data = {
+                Quantidade: formData.get('Quantidade'),
+                Sabores: flavors.join(', '),
+                Nome: formData.get('Nome'),
+                Endereço: formData.get('Endereço'),
+                Telefone: formData.get('Telefone'),
+                Observações: formData.get('Observações') || 'Nenhuma'
+            };
+
+            try {
+                const response = await fetch('https://formspree.io/f/xyzeglkr', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                if(response.ok) {
+                    this.reset();
+                    const successMessage = document.getElementById('successMessage');
+                    successMessage.style.opacity = '1';
+                    setTimeout(() => successMessage.style.opacity = '0', 3000);
+                } else {
+                    throw new Error('Erro ao enviar o pedido');
+                }
+            } catch(error) {
+                alert('Ocorreu um erro! Tente novamente.');
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
